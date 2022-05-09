@@ -6,6 +6,7 @@ package p01.designpattern.modelmethod;
  * @version: 1.0.0
  * @description:
  */
+
 public class AbstractCalculatorTest {
     public static void main(String[] args) {
         AbstractCalculator abstractCalculator = new Plus();

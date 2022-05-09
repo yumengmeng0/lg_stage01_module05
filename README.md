@@ -60,8 +60,140 @@
 * 将多个子共有的且逻辑基本相同的内容提取出来实现代码复用
 * 不同的子类实现不同的效果形成多态，有助于后期维护
 
-
-
-
 # 二、新特性
+
+## 1. Java8 新特性
+### 1.1 Java8的概述
+### 1.2 函数式接口
+* 函数式接口是只包含一个抽象方法非接口
+* Java8提供@FunctionalInterface注解来定义函数式接口，若定义接口不符合函数式的规范会报错
+* Java8中增加了java.util.function包，包含了常用的函数式接口
+
+| 接口名称 | 方法声明 | 功能介绍 |
+| --- | --- | --- |
+| Consumer<T> | void accept(T t) | 根据指定的参数执行操作 |
+| Supplier<T> | T get() | 得到一个返回值 |
+| Function<T, R> | R apply(T t) | 根据指定参数执行操作并返回 |
+| Predicate<T> | boolean test(T t) | 判断指定的参数是否满足条件 |
+
+### 1.3 Lambda表达式
+* Lambda表达式是实例化函数式接口的重要方式，使用Lambda表达式可以使代码变得更加简洁紧凑
+
+### 1.4 方法引用
+* 方法引用主要指通过方法的名字来指向一个方法而不需要为方法提供方法体，该方法的调用交给函数式接口执行
+* 方法引用使用一对冒号（::）将类或对象的方法名进行连接：  
+    * 对象的非静态方法的引用    ObjectName::MethodName
+    * 类的静态方法的引用    ClassName::StaticMethodName
+    * 类的非静态方法的引用    ClassName::MethodName
+    * 构造器的引用    ClassName::new
+    * 数组的引用    TypeName[]::new
+* 方法引用是在特定场景下Lambda表达式的一种简化表示，可以进一步简化代码编写，使代码更加紧凑整洁
+
+### 1.5 Stream接口
+
+### 1.6 Optional类
+#### 1.6.1 基本概念
+* java.util.Optional类可以理解为一个简单的容器，其值可能是null或者不是null，代表一个值存在或者不存在
+* 该类可以很好的解决指针异常，不用显示进行空值检测 
+
+#### 1.6.2 常用方法
+| 方法声明 | 功能介绍 |
+| --- | --- |
+| static \<T\> Optional\<T\> ofNull(T value) | 根据指定参数来得到Optional类型的对象 |
+| \<U\> Optional\<U\> map(Function\<? super T, ? extends U\> | 根据参数指定规则的结果得到Optional类型的对象 | 
+| T orElse(T other) | 若该值存在则返回，否则返回other的数值 |
+
+## 2. Java9新特性
+### 2.1 概述
+* 模块化系统，模块就是代码和数据的封装体，模块的代码被组织称多个包，每个包中包含Java类和接口，模块的数据则包括资源文件和其他静态信息
+
+### 2.2 模块化的使用
+#### 2.2.1 语法格式
+* 在module-info.java文件中
+```java
+module 模块名 {
+    exports 需要暴露的包名; 
+}
+```
+
+```java
+module 模块名 {
+    requires 模块名;
+}
+```
+
+#### 2.2.2 模块化的优势
+* 减少内存的开销
+* 简化各种类库和大型应用的开发和维护
+* 安全性、可维护性、提高性能
+
+### 2.3 钻石操作符的使用升级
+* 允许匿名内部类的使用中使用钻石操作符
+
+```java
+public class DiamondTest {
+
+    public static void main(String[] args) {
+        // 匿名内部类和钻石操作符的搭配使用
+        // Explicit 明确的; 清楚明白的; 易于理解的; (说话)清晰的; 直言的; 坦率的; 不隐晦的; 不含糊的;
+        // Comparator<Integer> comparator = new Comparator<Integer>() { // Explicit type argument Integer can be replaced with <>
+        Comparator<Integer> comparator = new Comparator<>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return 0;
+            }
+        };
+
+    }
+}
+```
+
+### 2.4 集合工厂方法
+#### 2.4.1 基本概念
+* Java9的List、Set和Map集合中增加了静态工厂方法of实现不可变实例的创建
+* 不可变体现在无法添加、修改和删除它们的元素
+* 不允许添加null元素
+
+#### 2.4.2 实际意义
+* 保证线程安全
+* 被不可信的类库使用时会很安全
+* 不需要支持修改的对象节省时间和空间的开销
+* 可当作常量来对待，并且这个对象以后也不会被改变
+
+### 2.5 InputStream的增强
+* InputStream类中提供了transferTo方法实现将数据直接传输到OutputStream中
+
+
+## 3. Java10新特性
+### 3.1 Java10概述
+* 一个本地类型推断、一个垃圾回收的增强
+
+### 3.2 局部变量类型推断
+#### 3.2.1 基本概念
+* 使用var作为局部变量类型推断标识符，仅适用于局部变量、增强for循环的索引、以及传统for循环的本地变量
+* 不能用于方法的形式参数、构造参数的形式参数、方法的返回类型、字段、catch形式参数或任何其他类型的变量声明
+
+#### 3.2.2 实际意义
+* 标识符var不是关键字
+* 避免了信息的冗余
+* 对齐了变量名
+* 更容易阅读
+
+## 4. Java11新特性
+### 4.1 概述
+* 长期支持版
+
+### 4.2 简化的编译运行操作
+* 使用java命令一次性进行编译和运行
+* 执行源文件中的第一个类必须包含主方法
+* 不可以使用其他源文件中自定义的类
+
+### 4.3 String类新增方法
+| 方法声明 | 功能介绍 |
+| --- | --- |
+| boolean isBlank() | 判断字符串是否为空或者包含空白代码点 |
+| <U>Optional<U> map(Function<? super T,? extends U> | 根据指定规则的结果来得到Optional类型的对象 |
+| T orElse(T other) | 若该值存在就返回，否则返回other |
+
+ 
 
